@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="bd9840b2-88f4-4204-bfa2-b434e3079c66" name="文档服务器" url="http://192.168.1.173">
+        <fileTransfer host="192.168.1.173" port="21" rootFolder="/webroot">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="33574599-93fe-4fdc-b068-b4ccf8b4faf4" name="liveview" url="http://192.168.1.57">
+        <fileTransfer host="192.168.1.57" port="12" rootFolder="/var/www/dream" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="12" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="3b46b0e8-a495-496a-ba39-fab253e2cf3d" name="demo" url="http://192.168.1.57">
+        <fileTransfer host="192.168.1.57" port="12" rootFolder="/var/www/dream/webroot/liveview/demo" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="12" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

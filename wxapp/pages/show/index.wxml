@@ -1,0 +1,6 @@
+<view class="container">
+<button bindtouchstart='clickBtn'>click</button>
+</view>
+<functional-page-navigator name="loginInfo">登录成功
+<button>ddd</button>
+</functional-page-navigator>

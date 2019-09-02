@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子线程播放器</title>
+</head>
+<body>
+<div>
+    <span id="content"></span>
+</div>
+<video width="400px" height="300px" id="player" autoplay></video>
+<script>
+  (function () {
+    let player =document.querySelector("#player")
+    let content = document.querySelector("#content")
+    let worker = null
+    let  data = null
+    let url = "http://mgsl.kh.csslvideo.com/bj/146-b.m3u8";
+    if(typeof Worker !=="undefined"){
+
+      data={action:"playVideo",url:"",w:window}
+      worker = new Worker("js/videoWorker.js");
+      worker.addEventListener("message",function (e) {
+
+        let obj =e.data;
+        let hls = obj.obj;
+        let type = obj.action;
+        switch (type) {
+          case "video":
+            hls.attachMedia(player);
+            console.log("当前接收到的类型-->"+obj.t);
+            hls.on(obj.t,function () {
+                hls.loadSource(url);
+              })
+            break;
+        }
+        // content.innerHTML=e.data;
+      },false)
+      worker.addEventListener('error', function (event) {
+        alert('Line #' + event.lineno + ' - ' + event.message + ' in ' + event.filename)
+      }, false)
+      worker.postMessage(data)
+    }else{
+      content.innerHTML ="worker not suport"
+    }
+
+  })()
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>定制直播测试</title>
+    <style>
+        #player{
+            width: 500px;
+            height: 400px;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<div id="swfId"></div>
+<video id="player"  autoplay x-webkit-airplay="allow" width="400px" height="300px"></video>
+<!--<object codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="600"-->
+        <!--height="490" id="xdfFlashplayer">-->
+    <!--<param name="movie"-->
+           <!--value="source/XDFLivePlayer.swf"/>-->
+    <!--<param name="allowFullScreen" value="true"/>-->
+    <!--<param name="allowScriptAccess" value="always"/>-->
+    <!--<param value="transparent" name="wmode"/>-->
+    <!--<param name="flashvars" value="playUrl=http://mgsl.kh.csslvideo.com/bj/146-b.m3u8">-->
+    <!--<embed src="source/XDFLivePlayer.swf"-->
+           <!--width="600" height="490" name="xdfplayer" allowFullScreen="true"-->
+           <!--wmode="transparent" allowScriptAccess="always" pluginspage="http://www.macromedia.com/go/getflashplayer"-->
+           <!--type="application/x-shockwave-flash"/>-->
+<!--</object>-->
+<script src="js/hls.js"></script>
+<script>
+  (function () {
+    var player = document.querySelector("#player");
+
+    if(Hls.isSupported()){
+      var hls = new Hls()
+      hls.attachMedia(player)
+      hls.on(Hls.Events.MEDIA_ATTACHED,function () {
+        hls.loadSource("http://mgsl.kh.csslvideo.com/bj/146-b.m3u8");
+      })
+    }
+
+  })()
+</script>
+</body>
+</html>

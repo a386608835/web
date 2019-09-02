@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="文档服务器">
+    <serverData>
+      <paths name="demo">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping local="" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="liveview">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/webroot/liveview/js" local="$USER_HOME$/WebstormProjects/live_view/liveview/trunk/live_view/WebContent/js" web="/" />
+            <mapping deploy="/webapp/liveview/WEB-INF/jsp/live" local="$USER_HOME$/WebstormProjects/live_view/liveview/trunk/live_view/WebContent/WEB-INF/jsp/live" web="/" />
+            <mapping deploy="/webapp/liveview/WEB-INF/classes/i18n" local="$USER_HOME$/WebstormProjects/live_view/liveview/trunk/live_view/src/i18n" web="/" />
+            <mapping deploy="/webroot/liveview/dist" local="$USER_HOME$/WebstormProjects/live_view/liveview/trunk/live_view/WebContent/dist" />
+            <mapping deploy="/webroot/liveview/js" local="$USER_HOME$/Desktop/webSDK/websdk/trunk/demo/js" />
+            <mapping deploy="/webroot/liveview/css" local="$USER_HOME$/WebstormProjects/live_view/liveview/trunk/live_view/WebContent/css" />
+            <mapping deploy="/webroot/liveview/js" local="$USER_HOME$/Desktop/webSDK/websdk/trunk/demo/dist" />
+            <mapping deploy="/webroot/liveview/js" local="$USER_HOME$/WebstormProjects/live_view/liveview/branches/live-view-niuq/live_view/WebContent/js" />
+            <mapping deploy="/webapp/liveview/WEB-INF/jsp/live" local="$USER_HOME$/WebstormProjects/live_view/liveview/branches/live-view-niuq/live_view/WebContent/WEB-INF/jsp/live" />
+            <mapping deploy="/webroot/liveview/dist" local="$USER_HOME$/WebstormProjects/live_view/liveview/branches/live-view-niuq/live_view/WebContent/dist" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="文档服务器">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/res/dp" local="$USER_HOME$/Desktop/dp/trunk/dp" web="/" />
+            <mapping deploy="/res/js" local="$USER_HOME$/Desktop/dp/trunk/js" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dedicated web worker</title>
+</head>
+<body>
+<p>Count numbers:
+    <output id="result"></output>
+</p>
+<button id="startWorker">startWorker</button>
+<button id="endWorker">stopWorker</button>
+<button id="notifi">发送通知</button>
+<div>
+    纬度：
+    <span id="latitude"></span>
+    经度：
+    <span id="longitude"></span>
+</div>
+</body>
+<script>
+  (function () {
+    navigator.geolocation.getCurrentPosition(geoSuccess,geoError);
+    function geoSuccess(e){
+
+      console.log(event.coords.latitude + ', ' + event.coords.longitude);
+      // postMessage({action:"position",coordsX:e.coords.latitude,coordsY:e.coords.longitude})
+    }
+    function geoError(e){
+      // postMessage({action:"error"})
+    }
+    var result = document.querySelector('#result'),
+      startWorker = document.querySelector('#startWorker'),
+      endWorker = document.querySelector('#endWorker'),
+      notifi = document.querySelector('#notifi'),
+      latitude=document.querySelector('#latitude'),
+      longitude = document.querySelector('#longitude'),
+      worker,
+      data = 10
+    notifi.addEventListener('click', function (e) {
+      // Let's check if the browser supports notifications
+      if (!("Notification" in window)) {
+        alert("This browser does not support system notifications");
+        // This is not how you would really do things if they aren't supported. :)
+      }
+
+      // Let's check whether notification permissions have already been granted
+      else if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        var notification = new Notification("Hi there!",{
+          body:"发送的通知请你查看",
+          dir:"rtl"
+        });
+      }
+
+      // Otherwise, we need to ask the user for permission
+      else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+          // If the user accepts, let's create a notification
+          if (permission === "granted") {
+            var notification = new Notification("Hi there!",{
+              body:"发送的通知请你查看",
+              dir:"ltr"
+            });
+          }
+        });
+      }
+    })
+    startWorker.addEventListener('click', function (event) {
+      if (typeof Worker !== 'undefined') {
+        if (typeof worker == 'undefined') {
+          worker = new Worker('./js/work_js.js')
+        }
+        worker.addEventListener('message', function (event) {
+          switch (event.data.action) {
+            case "request":
+
+              result.innerHTML = JSON.stringify(event.data)
+              break;
+            case "position":
+              latitude.innerHTML = event.data.coordsX;
+              longitude.innerHTML = event.data.coordsY;
+              break;
+            case "":
+              break
+
+          }
+          //
+        }, false)
+        worker.addEventListener('error', function (event) {
+          alert('Line #' + event.lineno + ' - ' + event.message + ' in ' + event.filename)
+        }, false)
+        worker.postMessage(data)
+        endWorker.addEventListener('click', function () {
+          worker.terminate()
+          worker.close()
+        }, false)
+      } else {
+        result.innerHTML = 'sry, your browser does not support Web workers...'
+      }
+    }, false)
+  })()
+</script>
+</html>

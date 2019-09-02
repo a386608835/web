@@ -1,0 +1,16 @@
+{
+  "name": "vue1",
+  "version": "1.0.0",
+  "description": "vue练习",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vue": "^2.6.10",
+    "vue-cli": "^2.9.6",
+    "webpack-cli": "^3.3.0"
+  }
+}

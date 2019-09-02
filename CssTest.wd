@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css</title>
+    <style>
+        .parent{
+            /*background-color: grey;*/
+            /*width: 500px;*/
+            /*height: 400px;*/
+            /*!*margin-left: 200px;*!*/
+            /*!*position: relative;*!*/
+            /*display: flex;*/
+            /*display: -webkit-flex;*/
+            /*!*flex-direction:column-reverse;*!*/
+            /*!*justify-content: space-evenly;*!*/
+
+            /*vertical-align: center;*/
+            display: grid;
+            width: 100%;
+            height: 100%;
+
+        }
+        .parent2:nth-child(1){
+            /*align-items: flex-end;*/
+            align-self:center;
+            /*margin-left: 100px;*/
+        }
+        .child{
+            background-color: black;
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            /*align-items: center;*/
+            /*position: absolute;*/
+            /*left: 30px;*/
+        }
+        .parent3{
+
+            background-color: pink;
+            width: 50px;
+            height: 50px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="parent">
+    <div class="parent2">
+        <div class="child"></div>
+    </div>
+    <!--<div class="parent3"></div>-->
+</div>
+</body>
+</html>

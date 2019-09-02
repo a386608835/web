@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>直播播放flv流验证</title>
+</head>
+<body>
+<!--<a href="https://github.com/bilibili/flv.js" rel="">下载</a>-->
+<input>
+<div id="player">
+    <video id="videoPlayer" controls autoplay width="400px" height="300px"></video>
+</div>
+<script src="js/flv.min.js" download="下载"></script>
+<script>
+  (function () {
+    var url = "https://ssl-ws1.csslcloud.net/src/09719E31D29DE1A89C33DC5901307461.flv"
+    let player = document.querySelector("#videoPlayer")
+    if(flvjs.isSupported()){
+      let flvPlayer = flvjs.createPlayer({
+        type:"flv",
+        isLive:true,
+        url:url
+    })
+      flvPlayer.attachMediaElement(player)
+      flvPlayer.load();
+      flvPlayer.play();
+    }
+  })()
+</script>
+</body>`
+</html>

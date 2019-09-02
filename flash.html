@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="render" content="webkit">
+    <title>点播播放器测试</title>
+    <style>
+        .logo{
+            width:168px;
+            height:76px;
+            /*background:url() no-repeat;*/
+            text-index:-9999px;/*内部文字缩进-9999 个像素,避免logo所处的div内部链接文字显示出来*/
+        }
+        #playerUrl{
+            width: 80%;
+
+        }
+        .container{
+            width: 50%;
+            height:100%;
+            position: relative;
+            left: 0;
+            right: 0;
+            margin: auto;
+
+        }
+        .videocontainer[status ="0" ]{
+            width: 100%;
+            height:535px;
+            display: none;
+        }
+        .videocontainer[status ="1" ]{
+            width: 100%;
+            height:535px;
+            display: block;
+        }
+        .selectContainer{
+            margin-top: 5px;
+        }
+        .configInput{
+            width: 100%;
+            height: 100px;
+            font-family: "Courier New", monospace;
+            font-size: 1.1em;
+        }
+        .inputArea{
+            margin-top: 5px;
+        }
+        .btnCss{
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="playerPathContaier">
+        <span>flash播放器地址：</span>
+        <input type="url" title="输入flash点播播放器域名" id="playerUrl">
+    </div>
+    <div id="selection" class="selectContainer">
+        <span>配置项:</span>
+        <select class="selectComptent" id="selectedOpt" title="选择添加配置项">
+            <option class="opt" name="" value="无">无</option>
+            <option class="opt" name="control_enable" value="控制条显示">控制条显示</option>
+            <option class="opt" name="progressbar_enable" value="进度条">进度条</option>
+            <option class="opt" name="loadingpic_enable" value="缓冲片头">缓冲片头</option>
+            <option class="opt" name="loading_enable" value="Loading图片显示">Loading图片显示</option>
+            <option class="opt" name="bigbutton_enable" value="大播放按钮显示">大播放按钮显示</option>
+            <option class="opt" name="tip_enable" value="顶部提示显示">顶部提示显示</option>
+            <option class="opt" name="alert_enable" value="播放器中间提示显示">播放器中间提示显示</option>
+            <option class="opt" name="recommend_enable" value="播放器推荐界面显示">播放器推荐界面显示</option>
+            <option class="opt" name="keyboard_enable" value="键盘控制是否可用">键盘控制是否可用</option>
+            <option class="opt" name="rightmenu_enable" value="右侧菜单显示">右侧菜单显示</option>
+            <option class="opt" name="recommend_enable" value="播放器推荐界面显示">播放器推荐界面显示</option>
+            <option class="opt" name="recommend_enable" value="播放器推荐界面显示">播放器推荐界面显示</option>
+        </select>
+        <span>参数：
+            <select id="valSele" class="selectComptent">
+                <option name="optStates" value="1" title="显示">显示</option>
+                <option name="optStates" value="0" title="隐藏">隐藏</option>
+            </select>
+        </span>
+        配置自定义回调:
+        <select class="selectComptent" id="callBackSeleted" title="选择添加配置项">
+            <option class="fnSelect" name="" value="无">无</option>
+            <option class="fnSelect" name="on_player_stop" value="播放结束后回调">播放结束后回调</option>
+            <option class="fnSelect" name="on_player_pause" value="暂停播放时回调">暂停播放时回调</option>
+            <option class="fnSelect" name="on_player_resume" value="暂停后继续播放时回调">暂停后继续播放时回调</option>
+            <option class="fnSelect" name="on_player_readys" value="播放器准备就绪回调">播放器准备就绪回调</option>
+            <option class="fnSelect" name="on_player_start" value="开始播放时回调">开始播放时回调</option>
+            <option class="fnSelect" name="on_player_seek" value="拖动播放时回调">拖动播放时回调</option>
+            <option class="fnSelect" name="on_player_buffering" value="缓冲开始或结束时回调">缓冲开始或结束时回调</option>
+            <option class="fnSelect" name="on_player_setquality" value="清晰度改变时回调">清晰度改变时回调</option>
+            <option class="fnSelect" name="on_player_volumechange" value="音量改变时回调">音量改变时回调</option>
+            <option class="fnSelect" name="on_player_playerror" value="当播放失败时回调">当播放失败时回调</option>
+            <option class="fnSelect" name="on_player_fullscreen" value="全屏或退出全屏时回调">全屏或退出全屏时回调</option>
+        </select>
+        <span><input type="text" id="callBackValue" value=""> </span>
+        <span>
+            <input type="button" value="添加配置" id="appendValueBtn" title="添加配置到播放器">
+            <input type="button" value="重置" id="resetConfigBtn" title="重置配置">
+        </span>
+        <div class="inputArea">
+            <textarea id="configText"  placeholder="配置数据...."  class="configInput" ></textarea>
+        </div>
+    </div>
+    <div>
+        <input type="button" value="生成播放" id="createBtn">
+    </div>
+    <div  class="videocontainer" id="vContainer" status="0">
+        <div id="player"></div>
+    </div>
+    <div class="btnCss">
+        <input id="start" type="button" title="开始播放" value="start">
+        <input id="pause" type="button" title="暂停播放" value="pause">
+        <input id="resume" type="button" title="恢复播放" value="resume">
+        <input id="setQuality" type="button" title="设置清晰度（设置获取清晰度第0索引的值）" value="setQuality">
+        <input id="setVolume" type="button" title="设置音量(每点一次增加0.1音量)" value="setVolume">
+        <input id="normalScreen" type="button" title="退出全屏" value="normalScreen">
+        <input id="fast_forward_time" type="button" title="设置快进快慢值（点击设置成10s）" value="fast_forward_time">
+    </div>
+    <div class="totalTime">
+        总时长：
+        <span id="totalTime">0</span>
+    </div>
+    <div class="currentTime">
+        当前播放时间:
+        <span id="currentTime">0</span>
+    </div>
+    <div class="qualityInfo">
+        当前视频可用清晰度列表：
+        <span id="qualityInfo">0</span>
+    </div>
+    <ol id="configFN">
+    </ol>
+</div>
+<script type="text/javascript" src="js/swfobject.js"></script>
+<script type="text/javascript">
+    /**
+     * PC端直播间页面common.js
+     *
+     * */
+        // 没有Flash插件，增加提示样式
+        var FlashTip = {
+            show: function () {
+                var tip = '<div class="flashtip"><p>您还没有安装flash播放器,请点击<a href="http://www.adobe.com/go/getflash" target="_blank">这里</a>安装</p></div>';
+                var container = document.getElementById("vContainer");
+                container.innerHTML=tip;
+//                $('#callbackPlayer, #livePlayer, #drawPanel, #playbackPanel, #playbackPlayer').append(tip);
+            },
+
+            checkFlash: function () {
+                var isIE = (navigator.appVersion.indexOf('MSIE') >= 0);
+                var hasFlash = true;
+
+                if (isIE) {
+                    try {
+                        var objFlash = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+                    } catch (e) {
+                        hasFlash = false;
+                    }
+                } else {
+                    if (!navigator.plugins['Shockwave Flash']) {
+                        hasFlash = false;
+                    }
+                }
+                return hasFlash;
+            },
+
+            init: function () {
+                if (!FlashTip.checkFlash()) {
+                    FlashTip.show();
+                }
+            }
+        };
+    !(function () {
+
+        var Utils={
+            getNodeById:function(v) {
+                return document.getElementById(v);
+            }
+        };
+        var Path ="https://p.bokecc.com/flash/player.swf?vid=A0335969DC2171440498CE5AAF1F53F5&siteid=40A53587B37573BD&autoStart=true&userid=40A53587B37573BD&mode=&listid=0&playerid=9F9E931600B7B202&playertype=1&mediatype=1"
+        var configInfo={};
+        var currentSelectedConfig= "";
+        var currentSelectedValue = 1 ;
+        var currentFN = "";
+        var fnList = [];
+        var qulityInfo = null;
+        var curVolum=0.5;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///获取的元素
+        var selected = Utils.getNodeById("selectedOpt")//配置项
+        var valSelec = Utils.getNodeById("valSele");//参数项
+        var restButton = Utils.getNodeById("resetConfigBtn");//参数项
+        var appendValueBtn = Utils.getNodeById("appendValueBtn");//参数项
+        var fnSelec = Utils.getNodeById("callBackSeleted");//回调参数
+        var fnValue = Utils.getNodeById("callBackValue");//回调参数设置的值
+        var videocontainer = Utils.getNodeById("vContainer");//获取当前播放器容器对象
+        var vPlayer = null;
+        var configText = null;
+        var totalTime = Utils.getNodeById("totalTime");//获取到的总时长
+        var currentTime = Utils.getNodeById("currentTime");//获取到的播放时长
+        var qualityInfo = Utils.getNodeById("qualityInfo");//获取到的清晰度数据
+        var startBtn = Utils.getNodeById("start");//开始播放
+        var pauseBtn = Utils.getNodeById("pause");//暂停播放
+        var resumeBtn = Utils.getNodeById("resume");//恢复播放
+        var setQualityBtn = Utils.getNodeById("setQuality");//设置清晰度
+        var setVolumeBtn = Utils.getNodeById("setVolume");//设置音量
+        var normalScreenBtn = Utils.getNodeById("normalScreen");//退出全屏
+        var ffTime = Utils.getNodeById("fast_forward_time");//设置快进快慢值
+        var creatbtn = Utils.getNodeById("createBtn");
+
+////////////////////////////////////////////////配置选项逻辑////////////////////////////////////////////////////////////////////////////////////////////////
+        restButton.addEventListener("click",function () {
+            configInfo = {};
+            upDateText();
+        });
+        appendValueBtn.addEventListener("click",function () {
+            updateSelecte();
+            updateValue();
+            updateCallBackSelected();
+            upDateFNvalue();
+            upDateText();
+        });
+
+        startBtn.addEventListener("click",function () {
+            if(!vPlayer)return
+            vPlayer.start();
+        });
+        pauseBtn.addEventListener("click",function () {
+            if(!vPlayer)return
+            vPlayer.pause();
+        });
+        resumeBtn.addEventListener("click",function () {
+            if(!vPlayer)return
+            vPlayer.resume();
+        });
+        normalScreenBtn.addEventListener("click",function () {
+            if(!vPlayer)return
+            vPlayer.normalScreen();
+        });
+        setQualityBtn.addEventListener("click",function () {
+           if(!vPlayer || !qulityInfo)return;
+           vPlayer.setQuality(qulityInfo);
+        });
+
+        setVolumeBtn.addEventListener("click",function () {
+            if(!vPlayer)return;
+            curVolum=curVolum>=1?(curVolum - 0.1):curVolum<=0?(curVolum+0.1):(curVolum + 0.1);
+            vPlayer.setVolume(curVolum);
+        });
+        ffTime.addEventListener("click",function () {
+            if(!vPlayer)return;
+            vPlayer.fast_forward_time(10);
+        });
+        //selected.addEventListener("change",updateSelecte);
+        //valSelec.addEventListener("change",updateValue);
+        /////////////////
+        function updateCallBackSelected(){
+            var indexOpt = fnSelec.selectedIndex;
+            var opt = document.getElementsByClassName("fnSelect")[indexOpt];
+            var attr = opt.getAttribute("name");
+            currentFN = attr;
+            //configInfo[currentSelectedConfig] =attr;
+        }
+        ///更新回调值
+        function upDateFNvalue() {
+            var attr = fnValue.value;
+            if(!attr || fnSelec.selectedIndex === 0)return;
+            //currentSelectedValue = attr;
+            configInfo[currentFN] =attr;
+            var obj = {key:currentFN,value:attr};
+            fnList.push(obj);
+        }
+
+
+        upDateText();
+        //更新参数项
+        function updateValue() {
+            var indexOpt = valSelec.selectedIndex;
+            var opt = document.getElementsByName("optStates")[indexOpt];
+            var attr = opt.value;
+            currentSelectedValue = attr;
+            if(!currentSelectedConfig)return;
+            configInfo[currentSelectedConfig] =attr;
+            //upDateText();
+        }
+
+        function updateSelecte() {
+            var indexOpt = selected.selectedIndex;
+            var opt = document.getElementsByClassName("opt")[indexOpt];
+            var attr = opt.getAttribute("name");
+            currentSelectedConfig = attr;
+            if(!currentSelectedConfig )return;
+            configInfo[attr] =currentSelectedValue;
+        }
+        //更新textInput
+        function upDateText() {
+            configText = Utils.getNodeById("configText");
+            var val =JSON.stringify(configInfo);
+            configText.innerText =val;
+        }
+
+
+////////////////////////////////////////播放器选项//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //加载SWF文件
+        function loadSWF(url) {
+            var j={
+                isjpg:1
+            };
+            swfobject.embedSWF( url ,"player", "100%", "100%", "11.7.0", null,
+                j,{ wmode : "transparent" , allowScriptAccess : "always" , allowFullScreen : "true" })
+        }
+        //获取当前flash对象
+        function getSWF( swfID ) {
+            if (window.document[ swfID ]) {
+                return window.document[ swfID ];
+            } else if (navigator.appName.indexOf("Microsoft") == -1) {
+                if (document.embeds && document.embeds[ swfID ]) {
+                    return document.embeds[ swfID ];
+                }
+            } else {
+                return document.getElementById( swfID );
+            }
+        }
+//////////////////////////////////////////// 播放器回调////////////////////////////////////////////////////
+        function windowFNset () {
+            console.log("当前传入的配置长度-->" +fnList.length);
+            if(fnList.length<1)return;
+            var ol = Utils.getNodeById("configFN");
+
+            for(var i= 0; i<fnList.length;i++){
+                (function (m) {
+                    var j=fnList[m];
+                    window[j.value]=function (m) {
+                        console.log('回调后的j值00-->'+j);
+                        var li="<li>参数"+j.key+"设置的回调"+j.value+"()成功</li>";
+                        ol.innerHTML+=li;
+                    }
+                })(i)
+
+            }
+        };
+        // console.log($("#createBtn"));
+        creatbtn.addEventListener("click",function () {
+
+            var path = Utils.getNodeById("playerUrl").value;
+
+            if(path.indexOf(".swf") === -1){
+                alert("请输入flash播放地址");
+                return
+            }
+            if(!path){
+                alert("请输入播放地址");
+                return;
+            }
+            windowFNset();
+            videocontainer.setAttribute("status","1");
+            FlashTip.init();
+            loadSWF(path);
+        });
+
+        window.on_cc_player_init = function (vid,objId) {
+            vPlayer = getSWF(objId);
+            var cutIfo=configText.value;
+            vPlayer.setConfig(JSON.parse(cutIfo));
+            insertTxt(totalTime,vPlayer.getDuration()+"s");
+            qulityInfo=vPlayer.getQualities()[0];
+            insertTxt(qualityInfo,JSON.stringify(vPlayer.getQualities()));
+            console.log("sssss"+vPlayer.getCurrentQuality());
+            setInterval(intervalFn,500);
+        };
+        function intervalFn() {
+            if(!vPlayer)return;
+            if(vPlayer.getPosition)
+                insertTxt(currentTime,vPlayer.getPosition()+"s");
+        }
+        function insertTxt(j,v){
+            j.innerText = v;
+
+        }
+
+////////////////////////////////////
+    })()
+</script>
+</body>
+</html>

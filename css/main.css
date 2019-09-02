@@ -1,0 +1,40 @@
+ul,li,div,h1,h2,h3,h4,h5{
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.container{
+    width: 50%;
+    margin: 0 auto;
+}
+.title{
+    text-align: center;
+    font-family: Arial;
+    font-size: 25px;
+}
+.content{
+    background-color: beige;
+}
+.listContainer{
+    list-style: none;
+    margin-top: 10px;
+}
+.listContainer>li{
+    display: table;
+    line-height: 30px;
+    margin-top: 10px;
+}
+.listContainer a{
+    display: table-cell;
+    background-color: floralwhite;
+    width: 150px;
+}
+.listContainer span{
+    display: table-cell;
+    width: 150px;
+}
+.clip_style{
+    display: table-cell;
+    margin-right: 20px;
+}

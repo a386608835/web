@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$USER_HOME$/Desktop/bjy-live-demo-2" />
+    <content url="file://$USER_HOME$/Desktop/dp" />
+    <content url="file://$USER_HOME$/Desktop/electron-demo" />
+    <content url="file://$USER_HOME$/Desktop/webSDK" />
+    <content url="file://$USER_HOME$/Desktop/websdk_demo_v2.0_20181226" />
+    <content url="file://$USER_HOME$/WebstormProjects/live_view/liveview" />
+    <content url="file://$MODULE_DIR$" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
