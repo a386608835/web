@@ -1,0 +1,114 @@
+<!doctype html>
+<body>
+<button id="playbtn">play</button>
+<video id="player" src="source/test.mp4"></video>
+<audio id="audioPlayer"></audio>
+<audio id="audio"></audio>
+<script>
+  var playBtn = document.querySelector("#playbtn");
+  var video = document.querySelector("#player");
+  var audio = document.querySelector("audio");
+
+  window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+  var audioPlayer = document.querySelector("#audioPlayer");
+  playBtn.onclick=function () {
+    const audioCtx = new AudioContext();
+
+    video.play()
+    //Create audio source
+    //Here, we use an audio file, but this could also be e.g. microphone input
+    const audioSourceNode = audioCtx.createMediaElementSource(video);
+
+    //Create analyser node
+    const analyserNode = audioCtx.createAnalyser();
+    analyserNode.fftSize = 256;
+    const bufferLength = analyserNode.frequencyBinCount;
+    const dataArray = new Float32Array(bufferLength);
+    const des = audioCtx.createMediaStreamDestination();
+
+    //Set up audio node network
+    audioSourceNode.connect(analyserNode);
+    analyserNode.connect(des);
+
+    var mediaRecord = new MediaRecorder(des.stream,{mimeType: 'audio/mpeg'});
+    var chrunck = [];
+
+    mediaRecord.onstop= function(){
+      console.log("stop");
+      var blob = new Blob(chrunck, { 'type' : 'audio/ogg; codecs=avc' });
+      var audioURL = window.URL.createObjectURL(blob);
+
+    }
+    mediaRecord.onstart = function(){
+
+    }
+    // Mainwindow.getAudioData = function(){
+    //
+    //   return null
+    // }
+
+    video.onended = function(){
+      console.log("playEnd");
+      mediaRecord.stop();
+    }
+    mediaRecord.ondataavailable = function (e) {
+      // chrunck.push();
+      var fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(e.data);
+      fileReader.onload = function (e) {
+        var arrBuff = new Uint8Array(fileReader.result);
+        console.log("发送音频数据");
+        MainWindow.javaReadMsg("send_audio_data",{data:arrBuff});
+      }
+      // console.log(chrunck);
+      console.log(e.data);
+    }
+
+    mediaRecord.start(1000);
+    mediaRecord.requestData();
+    audioPlayer.srcObject = des.stream.clone();
+    audioPlayer.play();
+    //Create 2D canvas
+    const canvas = document.createElement('canvas');
+    canvas.style.position = 'absolute';
+    canvas.style.top = 0;
+    canvas.style.left = 0;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    document.body.appendChild(canvas);
+    const canvasCtx = canvas.getContext('2d');
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    function draw() {
+      // console.log("当前状态是-->"+mediaRecord.state);
+      //Schedule next redraw
+      requestAnimationFrame(draw);
+
+      //  window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL || window.oURL;
+      // window.URL.createObjectURL(des.stream);
+      // console.log(blob.length);
+      //Get spectrum data
+      analyserNode.getFloatFrequencyData(dataArray);
+
+      // console.log("当前音频数据是-->"+)
+      //Draw black background
+      canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+      //Draw spectrum
+      const barWidth = (canvas.width / bufferLength) * 2.5;
+      let posX = 0;
+      for (let i = 0; i < bufferLength; i++) {
+        const barHeight = (dataArray[i] + 140) * 2;
+        canvasCtx.fillStyle = 'rgb(' + Math.floor(barHeight + 100) + ', 50, 50)';
+        canvasCtx.fillRect(posX, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+        posX += barWidth + 1;
+      }
+    };
+
+
+    draw();
+  }
+
+</script>
+</body>
